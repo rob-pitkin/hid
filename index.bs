@@ -1,12 +1,7 @@
 <pre class="metadata">
-Title: WebHID API
-Status: CG-DRAFT
-Group: wicg
-ED: https://wicg.github.io/webhid/
-Shortname: webhid
-Level: none
-Editor: Matt Reynolds, Google https://www.google.com/, w3cid 105511
-Repository: WICG/webhid
+Group: WHATWG
+H1: WebHID
+Shortname: hid
 Abstract:
   This document describes an API for providing access to devices that
   support the Human Interface Device (HID) protocol.
@@ -64,7 +59,7 @@ APIs. Devices that are not well supported by the host's HID driver are
 often inaccessible to web pages. Similarly, the outputs on most devices
 that are not supported by the host's HID driver are inaccessible.
 
-See also the related <a href="EXPLAINER.html">Explainer</a> document.
+See also the related <a href="https://github.com/whatwg/hid/blob/main/EXPLAINER.md">Explainer</a> document.
 
 # Motivating Applications # {#motivating-applications}
 
@@ -238,7 +233,7 @@ interface HID : EventTarget {
 };
 </xmp>
 
-Note: The user agent's implement may choose to conditionally expose
+Note: The user agent's implement <span class="allow-2119">may</span> choose to conditionally expose
 {{Navigator/hid}} attribute of the {{Navigator}} when the [=relevant global object=]
 of the {{Navigator}} is {{ServiceWorkerGlobalScope}}. For example,
 in the <b>Browser extension contexts</b> of [[browserext]].
@@ -284,11 +279,11 @@ A <dfn id="dfn-hid-interface">HID interface</dfn> is a logical interface that ca
 communicate with a device over the HID protocol. Each [=HID
 interface=] has exactly one [=report descriptor=] that describes the
 set of reports supported by that interface. A single physical device
-may expose more than one [=HID interface=]. Devices with multiple
+<span class="allow-2119">may</span> expose more than one [=HID interface=]. Devices with multiple
 [=HID interfaces=] run these steps once for each interface.
 
 For example, USB devices are implemented as a collection of
-interfaces, each of which may specify an interface class. When a
+interfaces, each of which <span class="allow-2119">may</span> specify an interface class. When a
 device has multiple USB interfaces that use the HID class, each
 interface is enumerated as a separate [=HID interface=].
 </div>
@@ -327,7 +322,7 @@ sequence=] for each [=HID interface=] when a device is first
 connected and cache the values in the system registry. If the
 [=report descriptor=] is not available but the system provides
 information that can be used to reconstruct the layout of each
-report, the user agent may use an alternate algorithm instead of
+report, the user agent <span class="allow-2119">may</span> use an alternate algorithm instead of
 parsing the [=report descriptor=].
 
 The [=report descriptor=] format is described in [[!USBIF-HID-CLASS]]
@@ -699,7 +694,7 @@ The {{HID/getDevices()}} method steps are:
     [=associated Document=] of the associated [=service worker client=]'s
     [=global object=].
 1.  If |document| is `null` or |document| is not [=allowed to use=]
-    the [=policy-controlled feature=] named `"hid"`, [=reject=]
+    the [=policy-controlled feature=] named "[=policy-controlled feature/hid=]", [=reject=]
     |promise| with a "{{SecurityError}}" {{DOMException}} and return |promise|.
 1.  Run the following steps [=in parallel=]:
     1.  Let |devices| be an empty
@@ -723,10 +718,10 @@ The {{HID/getDevices()}} method steps are:
 The {{HID/requestDevice()}} permission dialog presents a list of
 connected devices and asks the user to select one.
 
-If a device has multiple [=HID interfaces=], the dialog MAY present
+If a device has multiple [=HID interfaces=], the dialog <span class="allow-2119">may</span> present
 only a single item that represents all the interfaces. When the
 user selects an item that represents multiple [=HID interfaces=],
-the user agent MUST grant access to all the [=HID interfaces=]
+the user agent <span class="allow-2119">must</span> grant access to all the [=HID interfaces=]
 exposed by the device.
 </div>
 
@@ -736,7 +731,7 @@ The {{HID/requestDevice()}} method steps are:
 1.  Let |promise| be [=a new promise=].
 1.  If [=this=]'s [=relevant global object=]'s [=associated
     Document=] is not [=allowed to use=] the [=policy-controlled
-    feature=] named `"hid"`, [=reject=] |promise| with a
+    feature=] named "[=policy-controlled feature/hid=]", [=reject=] |promise| with a
     "{{SecurityError}}" {{DOMException}} and return |promise|.
 1.  If the [=relevant global object=] of [=this=] is not {{Window/window}},
     [=reject=] |promise| with a "{{NotSupportedError}}"
@@ -772,13 +767,13 @@ The {{HID/requestDevice()}} method steps are:
     1.  Prompt the user to grant the site access to a HID device by
         presenting them with the list of devices in |availableDevices|.
 
-        Note: The user agent may modify the device list before presenting
+        Note: The user agent <span class="allow-2119">may</span> modify the device list before presenting
         it to the user. For example, devices with multiple [=HID
-        interfaces=] SHOULD be represented by a single item such that
+        interfaces=] <span class="allow-2119">should</span> be represented by a single item such that
         selecting the item grants access to all interfaces exposed by
         the device. Whether a device is implemented as a single
         interface or a collection of interfaces is an implementation
-        detail that may not be known by the user and should not be
+        detail that <span class="allow-2119">may</span> not be known by the user and <span class="allow-2119">should</span> not be
         considered relevant for device access permissions.
 
     1.  Let |devices| be an empty
@@ -860,8 +855,8 @@ connected devices matching no exclusion filters are included.
 When one or more filters are provided, a device is included if
 any filter matches and no exclusion filters matches.
 
-All {{HIDDeviceFilter}} members are optional. Each member
-specifies a rule. To match a {{HIDDeviceFilter}}, every rule must
+All {{HIDDeviceFilter}} members are <span class="allow-2119">optional</span>. Each member
+specifies a rule. To match a {{HIDDeviceFilter}}, every rule <span class="allow-2119">must</span>
 be satisfied. An empty {{HIDDeviceFilter}} matches any device.
 
 Device ID rules are used to select devices by their [=vendor ID=]
@@ -879,7 +874,7 @@ Usage rules are used to select devices by the [=HID usages=]
 assigned to the [=top-level collections=] of the device. This is
 useful when an application is designed to work with a standard
 class of device. To match a device, at least one of the device's
-collections must match every usage rule. Including a
+collections <span class="allow-2119">must</span> match every usage rule. Including a
 {{HIDDeviceFilter/usagePage}} rule causes the filter to only
 match if the device contains a collection with the specified
 [=usage page=]. If a {{HIDDeviceFilter/usage}} rule is also
@@ -888,8 +883,8 @@ included, the filter will only match devices with the specified
 ignored if it is specified without a
 {{HIDDeviceFilter/usagePage}} rule.
 
-Device ID rules and usage rules may be combined. For instance, an
-application may want to match devices from a particular vendor,
+Device ID rules and usage rules <span class="allow-2119">may</span> be combined. For instance, an
+application <span class="allow-2119">may</span> want to match devices from a particular vendor,
 but only devices that implement a specific device class.
 
 The {{HIDDeviceRequestOptions/exclusionFilters}} option allows an
@@ -1140,7 +1135,7 @@ described in the following table:
     Note: <dfn>Top-level collections</dfn> group items that serve similar
     purposes within the device. Applications look at the [=HID usage=]
     applied to [=top-level collections=] to identify devices. An
-    application may not recognize a device if it does not follow the
+    application <span class="allow-2119">may</span> not recognize a device if it does not follow the
     conventions for a particular type of device. Refer to
     [[USBIF-HID-USAGE]] for more information about the conventional
     behavior for standard HID devices.
@@ -1233,9 +1228,9 @@ The {{HIDDevice/close()}} method steps are:
 
 ## <dfn method for="HIDDevice">forget()</dfn> method ## {#forget-method}
 
-Note: The user agent MAY decide to combine permissions across APIs, for
+Note: The user agent <span class="allow-2119">may</span> decide to combine permissions across APIs, for
 instance tracking WebHID + WebUSB device access under a unified
-low-level device access permission. This is why this method may
+low-level device access permission. This is why this method <span class="allow-2119">may</span>
 also revoke additional (unspecified yet) permissions in the future.
 
 <div algorithm="HIDDevice.forget()">
@@ -1286,7 +1281,7 @@ If the [=HID interface=] does not [=use report IDs=], pass 0
 instead of the report ID.
 
 For [=HID interfaces=] that [=use report IDs=], the report ID value
-0 is reserved and should not be used.
+0 is reserved and <span class="allow-2119">should</span> not be used.
 </div>
 
 The {{HIDDevice/sendReport()}} method steps are:
@@ -1329,7 +1324,7 @@ feature report with the specified |reportId| and
 IDs=], pass 0 instead of the report ID.
 
 For [=HID interfaces=] that [=use report IDs=], the report ID value
-0 is reserved and should not be used.
+0 is reserved and <span class="allow-2119">should</span> not be used.
 </div>
 
 The {{HIDDevice/sendFeatureReport()}} method steps are:
@@ -1372,7 +1367,7 @@ interface=] does not [=use report IDs=], pass 0 instead of the
 report ID.
 
 For [=HID interfaces=] that [=use report IDs=], the report ID value
-0 is reserved and should not be used.
+0 is reserved and <span class="allow-2119">should</span> not be used.
 </div>
 
 The {{HIDDevice/receiveFeatureReport()}} method steps are:
@@ -1399,8 +1394,8 @@ The {{HIDDevice/receiveFeatureReport()}} method steps are:
 
         Note: |data| will contain whatever report data was received from
         the operating system. If the device [=uses report IDs=] the
-        first byte may be the report ID. This byte is included
-        because the device may respond with other data in place of
+        first byte <span class="allow-2119">may</span> be the report ID. This byte is included
+        because the device <span class="allow-2119">may</span> respond with other data in place of
         the report ID.
 
     1.  If reading the feature report fails for any reason, [=queue a
@@ -1517,7 +1512,7 @@ dictionary HIDCollectionInfo {
 };
 </xmp>
 
-When a device is first connected to the system, the system MUST
+When a device is first connected to the system, the system must
 retrieve the [=report descriptor=] for each [=HID interface=] exposed
 by the device. The <dfn>Report descriptor</dfn> is a [=byte sequence=]
 that can be expanded into a hierarchical data structure describing the
@@ -1966,9 +1961,9 @@ navigator.hid.addEventListener('disconnect', ({device}) => {
 <div class="example" id="example-3">
 Devices are not accessible through {{HID/getDevices()}} and will not
 generate connection events until permission has been granted to
-access the device. The page may request permission using
+access the device. The page <span class="allow-2119">may</span> request permission using
 {{HID/requestDevice()}}. In this example, the page requests access to
-a device with [=vendor ID=] `0xABCD`. The device must also have a
+a device with [=vendor ID=] `0xABCD`. The device <span class="allow-2119">must</span> also have a
 collection with [=usage page=] Consumer (`0x000C`) and [=usage ID=]
 Consumer Control (`0x0001`). The device with [=product ID=] `0x1234`
 has been reported as malfunctioning.
@@ -2061,7 +2056,7 @@ try {
 # The HID Blocklist # {#blocklist}
 
 This specification relies on a blocklist file in the <a href=
-"https://github.com/WICG/webhid">https://github.com/WICG/webhid</a>
+"https://github.com/whatwg/hid">https://github.com/whatwg/hid</a>
 repository to restrict the set of HID devices a website can access.
 
 <div algorithm="parsing the blocklist">
@@ -2073,7 +2068,7 @@ parsing its contents as JSON.
 
 The <dfn>HID blocklist</dfn> is the result of [=parsing the blocklist=]
 at <a href=
-"https://github.com/WICG/webhid/blob/main/blocklist.txt">https://github.com/WICG/webhid/blob/main/blocklist.txt</a>
+"https://github.com/whatwg/hid/blob/main/blocklist.txt">https://github.com/whatwg/hid/blob/main/blocklist.txt</a>
 
 <div algorithm="blocked report">
 A report is a <dfn>blocked report</dfn> if the following steps return
@@ -2120,14 +2115,29 @@ following steps return `true`:
 This specification defines a feature that controls whether the
 {{Navigator/hid}} attribute is exposed on the {{Navigator}} object.
 
-The feature name for this feature is `"hid"`.
+The feature name for this feature is "<dfn for="policy-controlled feature"><code>hid</code></dfn>".
 
 The [=policy-controlled feature/default allowlist=] for this feature
 is `'self'`.
 
-<h2 class="no-num" id="acknowledgements">Acknowledgements</h2>
+<h2 id=acknowledgments class=no-num>Acknowledgments</h2>
 
-The following people contributed to the development of this
-document.
+<p>Thanks to
+Feras Aldahlawi,
+François Beaufort<!-- beaufortfrancois; GitHub -->,
+Jack Hsieh<!-- chengweih001; GitHub -->,
+Jeffrey Yasskin<!-- jyasskin; GitHub -->,
+Jonas Due Vesterheden,
+Kagami Sascha Rosylight<!-- autokagami; GitHub -->,
+Marcos Cáceres<!-- marcoscaceres; GitHub -->,
+Peter Høy Andersen<!-- pehandersen-jabra; GitHub -->,
+Reilly Grant<!-- reillyeon; GitHub -->,
+Rob Pitkin<!-- rob-pitkin; GitHub -->,
+Ted Mielczarek<!-- luser; GitHub -->,
+Thomas Steiner<!-- tomayac; GitHub -->,
+Tim Steiner<!-- onlykey; GitHub -->, and
+Vincent Scheib<!-- scheib; GitHub -->
+for being awesome.
 
-<ul id="gh-contributors"></ul>
+<p>This standard is written by Matt Reynolds
+(<a href=https://www.google.com/>Google</a>, <a href=mailto:mattreynolds@google.com>mattreynolds@google.com</a>).
