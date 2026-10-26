@@ -336,7 +336,7 @@ items</dfn> and <dfn>Local items</dfn> describe the data fields.
 [=Main item=], while [=Global items=] define characteristics that
 affect all subsequently defined [=Main items=].
 
-Each item has a <dfn>item data field</dfn> containing 0, 1, 2, or 4
+Each item has an <dfn>item data field</dfn> containing 0, 1, 2, or 4
 bytes of data associated with the item and a <dfn>bSize field</dfn>
 that describes how many bytes are used to store the [=item data
 field=]. Each item also has a tag that identifies its type.
@@ -1652,15 +1652,15 @@ dictionary HIDReportInfo {
 A {{HIDReportInfo}} represents one input, output, or feature report
 within the [=report descriptor=].
 
-<dl>
-  <dt><dfn dict-member for="HIDReportInfo">reportId</dfn> member</dt>
+<dl dfn-type="dict-member" dfn-for="HIDReportInfo">
+  <dt><dfn>reportId</dfn> member</dt>
   <dd>
-    A [=HID interface=] <dfn lt="uses report IDs|use report IDs">uses report
+    A [=HID interface=] <dfn dfn for="" lt="uses report IDs|use report IDs">uses report
     IDs</dfn> if it prepends a one-byte identification prefix to each
     report transfer. The {{HIDReportInfo/reportId}} member is the prefix
     for this report if the interface [=uses report IDs=], or 0 otherwise.
   </dd>
-  <dt><dfn dict-member for="HIDReportInfo">items</dfn> member</dt>
+  <dt><dfn>items</dfn> member</dt>
   <dd>
     A [=sequence=] of {{HIDReportItem}} representing the fields of this
     report.
